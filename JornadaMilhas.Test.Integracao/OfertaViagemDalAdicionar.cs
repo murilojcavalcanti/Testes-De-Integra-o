@@ -16,16 +16,24 @@ public class OfertaViagemDalAdicionar
             "Application Intent=ReadWrite;Multi Subnet Failover=False").Options;
         context = new JornadaMilhasContext(options);
     }
+    //Setup
+    private OfertaViagem CriaViagem()
+    {
+        Rota rota = new Rota("São paulo", "Fortaleza");
+        Periodo periodo = new Periodo(new DateTime(2024, 8, 20), new DateTime(2024, 8, 30));
+        double preco = 350;
+        return new OfertaViagem(rota, periodo, preco);
+    }
+
+
+
     [Fact]
     public void RegistrarOfertaNoBanco()
     {
         //arrange
-        Rota rota = new Rota("São paulo", "Fortaleza");
-        Periodo periodo = new Periodo(new DateTime(2024,8,20), new DateTime(2024,8,30));
-        double preco = 350;
         
 
-        var oferta = new OfertaViagem(rota, periodo, preco);
+        var oferta = CriaViagem();
         var dal = new OfertaViagemDAL(context);
 
         //act
@@ -42,11 +50,8 @@ public class OfertaViagemDalAdicionar
     public void RegistrarOfertaNoBancoComInformaoesCorretas()
     {
         //arrange
-        Rota rota = new Rota("São paulo", "Fortaleza");
-        Periodo periodo = new Periodo(new DateTime(2024, 8, 20), new DateTime(2024, 8, 30));
-        double preco = 350;
 
-        var oferta = new OfertaViagem(rota, periodo, preco);
+        var oferta = CriaViagem();
         var dal = new OfertaViagemDAL(context);
 
         //act
