@@ -11,10 +11,9 @@ namespace JornadaMilhas.Test.Integracao
     public class OfertaViagemDalRecuperaTodos
     {
         private JornadaMilhasContext Context;
-
-        public OfertaViagemDalRecuperaTodos(JornadaMilhasContext context)
+        public OfertaViagemDalRecuperaTodos(ContextoFixture fixture)
         {
-            Context = context;
+            Context = fixture.Context;
         }
 
         [Fact]
