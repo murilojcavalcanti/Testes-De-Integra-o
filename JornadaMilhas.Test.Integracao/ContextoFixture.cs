@@ -13,7 +13,7 @@ namespace JornadaMilhas.Test.Integracao
     public class ContextoFixture //: IAsyncLifetime<- Interface usada para conseguir usar o docker nos tests
     {
         public JornadaMilhasContext Context;
-        private readonly MsSqlContainer msSqlContainer = new MsSqlBuilder().WithImage("mcr.microsoft.com/mssql/server").Build(); 
+        //private readonly MsSqlContainer msSqlContainer = new MsSqlBuilder().WithImage("mcr.microsoft.com/mssql/server").Build(); 
 
         public ContextoFixture()
         {
@@ -22,9 +22,8 @@ namespace JornadaMilhas.Test.Integracao
             ().UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=JornadaMilhas;" +
             "Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;" +
             "Application Intent=ReadWrite;Multi Subnet Failover=False").Options;
-            Context = new JornadaMilhasContext(options);
             
-
+            Context = new JornadaMilhasContext(options);
         }
         /*
          * usando o docker
