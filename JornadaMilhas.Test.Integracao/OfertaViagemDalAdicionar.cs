@@ -4,8 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using Xunit.Abstractions;
 
 namespace JornadaMilhas.Test.Integracao;
-
-public class OfertaViagemDalAdicionar:IClassFixture<ContextoFixture>
+[Collection(nameof(ContextoCollection))]
+public class OfertaViagemDalAdicionar
 {
     private JornadaMilhasContext context;
 
