@@ -1,4 +1,6 @@
-﻿using JornadaMilhas.Dados;
+﻿using Bogus;
+using JornadaMilhas.Dados;
+using JornadaMilhasV1.Modelos;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -24,6 +26,45 @@ namespace JornadaMilhas.Test.Integracao
             "Application Intent=ReadWrite;Multi Subnet Failover=False").Options;
             
             Context = new JornadaMilhasContext(options);
+            Context.Database.Migrate();
+        }
+
+        public void CriaDadosFake()
+        {
+            Periodo periodo = new PeriodoDataBuilder().Build();
+
+            var rota = new Rota("Curitiba", "São Paulo");
+
+            var fakerOferta = new Faker<OfertaViagem>()
+                .CustomInstantiator(f => new OfertaViagem(
+                    rota,
+                    new PeriodoDataBuilder().Build(),
+                    100 * f.Random.Int(1, 100))
+                )
+                .RuleFor(o => o.Desconto, f => 40)
+                .RuleFor(o => o.Ativa, f => true);
+
+            var lista = fakerOferta.Generate(200);
+
+            if (lista is null)
+            {
+                Console.WriteLine("lista nula"); 
+               
+            }
+            
+            Context.OfertasViagem.AddRange(lista);
+            Context.SaveChanges();
+        }
+
+        public async Task LimpaDadosDoBanco()
+        {
+            /*
+            Context.OfertasViagem.RemoveRange(Context.OfertasViagem);
+            Context.Rotas.RemoveRange(Context.Rotas);
+            await Context.SaveChangesAsync();*/
+
+            Context.Database.ExecuteSqlRaw("DELETE FROM OfertasViagem" );
+            Context.Database.ExecuteSqlRaw("DELETE FROM Rotas" );
         }
         /*
          * usando o docker
